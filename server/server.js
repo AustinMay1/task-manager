@@ -1,15 +1,23 @@
-import express from "express"
-import morgan from "morgan"
+import express from "express";
+import morgan from "morgan";
+import dotenv from "dotenv";
+
+import router from "./router.js";
+import { authorize } from "./utils/auth.js";
+import { createUser, signIn } from "./handlers/user.js";
 
 const app = express();
 
-app.use(morgan('dev'))
+dotenv.config();
 
-app.get("/api", (req, res) => {
-    res.json({users: ["user1", "user2", "user3"]})
-})
+app.use(morgan("dev"));
+app.use(express.json());
+
+app.use("/api", authorize, router);
+
+app.post("/user", createUser);
+app.post("/signIn", signIn);
 
 app.listen(5000, () => {
-    console.log("Server running on http://localhost:5000");
-})
-
+  console.log("Server running on http://localhost:5000");
+});
