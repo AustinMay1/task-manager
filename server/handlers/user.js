@@ -1,12 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import { json } from "express";
 import { checkPass, createJWT, hashPass } from "../utils/auth.js";
 
 const prisma = new PrismaClient();
 
 export const createUser = async (req, res) => {
-
-  const { username, password } = req.body
+  const { username, password } = req.body;
 
   const hash = await hashPass(password);
 
@@ -22,8 +20,7 @@ export const createUser = async (req, res) => {
 };
 
 export const signIn = async (req, res) => {
-
-  const { username, password } = req.body
+  const { username, password } = req.body;
 
   const user = await prisma.user.findUnique({
     where: {
