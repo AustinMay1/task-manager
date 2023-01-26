@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Card, CardHeader, CardBody, Text, Input, FormControl, FormLabel, useToast, Button } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../utils/context";
 
 function SignUp() {
     const [username, setUsername] = useState("");
@@ -7,6 +10,8 @@ function SignUp() {
     const [loading, setLoading] = useState(false);
 
     const toast = useToast();
+    const navigate = useNavigate();
+    const { setUser } = useContext(UserContext);
 
     const register = async (e) => {
         e.preventDefault();
@@ -29,12 +34,22 @@ function SignUp() {
             localStorage.setItem("token", res.token);
             toast({
                 title: "Registered Successfully!",
+                status: 'success',
                 duration: 3000,
                 isClosable: true
             })
         }
+        localStorage.setItem("user", body.username);
+        setUser(body.username);
+        navigate("/dashboard");
         } catch (e) {
             console.error(e)
+            toast({
+              title: 'Username already taken!',
+              duration: 3000,
+              status: 'error',
+              isClosable: true
+            })
         }
 
         setLoading(false);
@@ -51,7 +66,7 @@ function SignUp() {
               <FormControl>
                 <FormLabel htmlFor="username">Username</FormLabel>
                 <Input
-                  name="username"
+                  id="username"
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -59,8 +74,8 @@ function SignUp() {
 
                 <FormLabel htmlFor="password">Password</FormLabel>
                 <Input
-                  name="password"
-                  type="text"
+                  id="password"
+                  type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -71,6 +86,8 @@ function SignUp() {
             </form>
           </CardBody>
         </Card>
+        <Text>Already have an account?</Text>
+        <Button colorScheme={'green'} onClick={() => navigate('/login')}>Sign In</Button>
       </div>
     );
 }
