@@ -57,7 +57,7 @@ function SignUp() {
 
     return (
       <div>
-        <Card maxW="sm">
+        <Card maxW="sm" align='center'>
           <CardHeader>
             <Text>Sign Up</Text>
           </CardHeader>

@@ -20,10 +20,13 @@ export const createProject = async (req, res) => {
 
 export const findProject = async (req, res) => {
   const { id } = req.params;
-  
+
   const project = await prisma.project.findUnique({
     where: {
       id: id,
+    },
+    include: {
+      tasks: true,
     },
   });
 
@@ -32,23 +35,23 @@ export const findProject = async (req, res) => {
 };
 
 export const getProjects = async (req, res) => {
-
   const { username } = req.body;
 
   try {
-  const project = await prisma.project.findMany({
-    where: {
-      userId: {
-        equals: username
-      }
-    }
-  });
-  res.status(200);
-  res.json({ data: project });
+    const project = await prisma.project.findMany({
+      where: {
+        userId: {
+          equals: username,
+        },
+      },
+      include: {
+        tasks: true,
+      },
+    });
+    res.status(200);
+    res.json({ data: project });
   } catch (e) {
-    console.error(e)
-    res.status(404)
+    console.error(e);
+    res.status(404);
   }
- 
-  
-}
+};

@@ -31,8 +31,8 @@ function Nav({ routes }) {
         <HStack spacing={8} alignItems={"center"}>
           <Box as="b">Taskify</Box>
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
-            {routes.map((route) => (
-              <Link to={route.path}>{route.name}</Link>
+            {routes.map((route, i) => (
+              <Link key={i} to={route.path}>{route.name}</Link>
             ))}
           </HStack>
         </HStack>
