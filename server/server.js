@@ -1,12 +1,14 @@
 import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
-
+import { body, check, validationResult } from "express-validator";
 import router from "./router.js";
 import { authorize } from "./utils/auth.js";
 import { createUser, signIn } from "./handlers/user.js";
+import { PrismaClient } from "@prisma/client";
 
 const app = express();
+const prisma = new PrismaClient();
 
 dotenv.config();
 
@@ -15,8 +17,8 @@ app.use(express.json());
 
 app.use("/api", authorize, router);
 
-app.post("/user", createUser);
-app.post("/signIn", signIn);
+app.post("/register",createUser);
+app.post("/login", signIn);
 
 app.listen(5000, () => {
   console.log("Server running on http://localhost:5000");

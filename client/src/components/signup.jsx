@@ -20,7 +20,7 @@ function SignUp() {
 
         try {
         const body = { username, password }
-        const user = await fetch('/user', {
+        const user = await fetch('/register', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"

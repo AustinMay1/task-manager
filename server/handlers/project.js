@@ -30,3 +30,25 @@ export const findProject = async (req, res) => {
   res.status(200);
   res.json({ data: project });
 };
+
+export const getProjects = async (req, res) => {
+
+  const { username } = req.body;
+
+  try {
+  const project = await prisma.project.findMany({
+    where: {
+      userId: {
+        equals: username
+      }
+    }
+  });
+  res.status(200);
+  res.json({ data: project });
+  } catch (e) {
+    console.error(e)
+    res.status(404)
+  }
+ 
+  
+}

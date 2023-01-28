@@ -34,7 +34,7 @@ function SignIn() {
 
         try {
             const body = { username, password }
-            const user = await fetch('/signIn', {
+            const user = await fetch('/login', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"

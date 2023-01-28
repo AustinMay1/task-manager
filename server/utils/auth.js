@@ -20,7 +20,7 @@ export const authorize = (req, res, next) => {
 
     if(!token) {
         console.log("Invalid Token")
-        res.state(401)
+        res.status(401)
         res.send("Unauthorized")
     }
 
