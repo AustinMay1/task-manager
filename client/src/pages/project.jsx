@@ -13,7 +13,11 @@ import {
   Tag,
   TagLabel,
   Container,
+  IconButton,
+  Flex
 } from "@chakra-ui/react";
+import { ArrowBackIcon, AddIcon, ArrowLeftIcon } from "@chakra-ui/icons"
+import { useNavigate } from "react-router-dom";
 
 function Projects() {
   const [project, setProject] = useState([]);
@@ -22,6 +26,8 @@ function Projects() {
   const params = useParams();
   const projId = params.id;
   const bearer = localStorage.getItem("token");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const data = async () => {
@@ -43,7 +49,11 @@ function Projects() {
   return (
     <div>
       <Container maxW="1000px">
-        <Heading>Project: {project.title}</Heading>
+        <Flex justifyContent={'space-between'}>
+        <IconButton w={8} h={8} colorScheme={'teal'} variant={'outline'} icon={<ArrowBackIcon />} onClick={() => navigate('/dashboard')} />
+        <IconButton w={8} h={8} colorScheme={'teal'} variant={'outline'} icon={<AddIcon w={3} h={3} />} />
+        </Flex>
+        <Heading pt={8}>Project: {project.title}</Heading>
         <TableContainer pt={10}>
           <Table variant="simple" size="md">
             <TableCaption>Tasks</TableCaption>

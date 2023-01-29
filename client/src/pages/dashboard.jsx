@@ -14,13 +14,26 @@ import {
   Divider,
   Flex,
   Container,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import Form from "../components/projectform";
 
 function Dashboard() {
   const { user } = useContext(UserContext);
   const [projects, setProjects] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [loading, setLoading] = useState(false);
 
+  const toast = useToast();
   const navigate = useNavigate();
   const bearer = localStorage.getItem("token");
 
@@ -43,12 +56,59 @@ function Dashboard() {
     data();
   }, [user, bearer]);
 
+  async function createProject(data) {
+    const { title, description } = data;
+
+    try {
+      setLoading(true);
+      await fetch("/api/projects", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${bearer}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: title,
+          description: description,
+          userId: user,
+        }),
+      });
+      onClose();
+      setLoading(false);
+      toast({
+        title: "Project created!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return (
-    <Container maxW="container.lg">
-      <SimpleGrid minChildWidth={"220px"} spacing="40px">
+    <Container maxW="container.xl">
+      <Button colorScheme={"teal"} variant={"outline"} onClick={onOpen}>
+        New Project
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay backdropFilter={"blur(10px)"} />
+        <ModalContent>
+          <ModalHeader>New Project</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Form createProject={createProject} isLoading={loading} />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button>Submit</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <SimpleGrid pt={8} minChildWidth={"320px"} spacing="40px">
         {Array.isArray(projects)
           ? projects.map((project) => (
-              <Card maxW="md" w="full" key={project.id}>
+              <Card maxW="lg" key={project.id}>
                 <CardHeader>
                   <Flex
                     flex="1"
