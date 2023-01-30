@@ -25,20 +25,23 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import Form from "../components/projectform";
+import ProjectForm from "../components/projectform";
 
 function Dashboard() {
   const { user } = useContext(UserContext);
-  const [projects, setProjects] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [loadProjects, setLoadProjects] = useState(true);
   const toast = useToast();
   const navigate = useNavigate();
   const bearer = localStorage.getItem("token");
 
   useEffect(() => {
     const data = async () => {
+      if(!loadProjects) {
+        return
+      }
       const proj = await fetch("/api/projects/all", {
         method: "POST",
         headers: {
@@ -51,10 +54,11 @@ function Dashboard() {
       }).then((res) => res.json());
 
       setProjects(proj.data);
+      setLoadProjects(false)
     };
 
     data();
-  }, [user, bearer]);
+  }, [user, bearer, loadProjects]);
 
   async function createProject(data) {
     const { title, description } = data;
@@ -84,6 +88,7 @@ function Dashboard() {
     } catch (e) {
       console.error(e);
     }
+    setLoadProjects(true);
   }
 
   return (
@@ -97,11 +102,10 @@ function Dashboard() {
           <ModalHeader>New Project</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Form createProject={createProject} isLoading={loading} />
+            <ProjectForm createProject={createProject} loading={loading} />
           </ModalBody>
 
           <ModalFooter>
-            <Button>Submit</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

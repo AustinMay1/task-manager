@@ -9,7 +9,8 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-function ProjectForm({ createProject, loading }) {
+
+function TaskForm({ createTask, loading }) {
   const {
     register,
     handleSubmit,
@@ -17,13 +18,15 @@ function ProjectForm({ createProject, loading }) {
   } = useForm();
 
   return (
-    <form onSubmit={handleSubmit(createProject)}>
+    <form onSubmit={handleSubmit(createTask)}>
       <FormControl isRequired>
-        <FormLabel>Project Title</FormLabel>
+        <FormLabel>Task Title</FormLabel>
         <Input type="text" {...register("title")} />
         {errors.title && <p>Title is required</p>}
         <FormLabel>Description</FormLabel>
         <Textarea type="text" {...register("description")} />
+        <FormLabel>Due Date</FormLabel>
+        <Input type="date" {...register("duedate")}/>
       </FormControl>
       <Button mt={4} type="submit" isLoading={loading} colorScheme={'teal'}>
         Create
@@ -32,4 +35,4 @@ function ProjectForm({ createProject, loading }) {
   );
 }
 
-export default ProjectForm;
+export default TaskForm;
