@@ -24,6 +24,7 @@ model Project {
   createdAt   DateTime @default(now())
   author      User     @relation(fields: [userId], references: [username])
   userId      String
+  status      String?  
   tasks       Task[]
 }
 

@@ -5,10 +5,8 @@ import { body, check, validationResult } from "express-validator";
 import router from "./router.js";
 import { authorize } from "./utils/auth.js";
 import { createUser, signIn } from "./handlers/user.js";
-import { PrismaClient } from "@prisma/client";
 
 const app = express();
-const prisma = new PrismaClient();
 
 dotenv.config();
 
