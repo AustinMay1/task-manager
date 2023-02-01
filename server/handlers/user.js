@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import { checkPass, createJWT, hashPass } from "../utils/auth.js";
-import { body, validationResult, check } from "express-validator";
 
 const prisma = new PrismaClient({
   errorFormat: 'pretty'

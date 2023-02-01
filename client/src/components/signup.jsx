@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardHeader, CardBody, Text, Input, FormControl, FormLabel, useToast, Button } from "@chakra-ui/react";
+import { Card, CardHeader, CardBody, Text, Input, FormControl, FormLabel, useToast, Button, Container, Heading } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../utils/context";
@@ -56,10 +56,10 @@ function SignUp() {
     }
 
     return (
-      <div>
-        <Card maxW="sm" align='center'>
+      <Container maxW='md'>
+        <Card maxW="sm" boxShadow="lg">
           <CardHeader>
-            <Text>Sign Up</Text>
+            <Heading>Register</Heading>
           </CardHeader>
           <CardBody>
             <form onSubmit={register}>
@@ -80,15 +80,15 @@ function SignUp() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </FormControl>
-              <Button type="submit" colorScheme={"blue"} isLoading={loading}>
+                <Button mt={4} type="submit" colorScheme={"blue"} isLoading={loading}>
                 Submit
               </Button>
             </form>
           </CardBody>
         </Card>
-        <Text>Already have an account?</Text>
-        <Button colorScheme={'green'} onClick={() => navigate('/login')}>Sign In</Button>
-      </div>
+        <Text mt={4}>Already have an account?</Text>
+          <Button mt={4} colorScheme={'green'} onClick={() => navigate('/login')}>Sign In</Button>
+      </Container>
     );
 }
 

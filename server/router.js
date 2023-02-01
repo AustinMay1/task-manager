@@ -13,6 +13,7 @@ router.put("/projects/:id/status", updateProjStatus);
 
 router.get("/tasks", findTasks);
 router.post("/tasks", createTask);
-router.put("/tasks", updateTask);
+router.put("/tasks/:id", updateTask);
+router.delete("/tasks/:id");
 
 export default router;

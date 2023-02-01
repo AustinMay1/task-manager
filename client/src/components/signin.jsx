@@ -11,7 +11,8 @@ import {
   Text,
   Container,
   Box,
-  Center
+  Center,
+    Heading
 } from "@chakra-ui/react";
 import { UserContext } from "../utils/context";
 import { useContext } from "react";
@@ -72,19 +73,12 @@ function SignIn() {
 
     return (
       <Container
-        maxW="lg"
-        py={{ base: "12", md: "24" }}
-        px={{ base: "0", sm: "8" }}
+        maxW="md"
       >
-        <Box
-          boxShadow={{ base: "none", sm: "md" }}
-          borderRadius={{
-            base: "none",
-            sm: "xl",
-          }}
-        >
-          <Card maxW="sm">
-            <CardHeader>Sign In</CardHeader>
+          <Card maxW="sm" boxShadow="lg">
+            <CardHeader>
+                <Heading>Login</Heading>
+            </CardHeader>
             <CardBody>
               <form onSubmit={login}>
                 <FormControl>
@@ -102,17 +96,16 @@ function SignIn() {
                     type="password"
                   />
                 </FormControl>
-                <Button type="submit" colorScheme={"blue"} isLoading={loading}>
+                  <Button mt={4} type="submit" colorScheme={"blue"} isLoading={loading}>
                   Login
                 </Button>
               </form>
             </CardBody>
           </Card>
-          <Text>Don't have an account?</Text>
-          <Button colorScheme={"green"} onClick={() => navigate("/register")}>
+          <Text mt={4}>Don't have an account?</Text>
+          <Button mt={4} colorScheme={"green"} onClick={() => navigate("/register")}>
             Sign Up
           </Button>
-        </Box>
       </Container>
     );
 }
