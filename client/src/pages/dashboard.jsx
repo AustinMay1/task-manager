@@ -32,6 +32,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import ProjectForm from "../components/projectform";
+import Reminders from "../components/reminders";
 import { GoKebabVertical, GoTrashcan, GoCheck, GoSync } from "react-icons/go";
 
 function Dashboard() {
@@ -144,116 +145,122 @@ function Dashboard() {
   }
 
   return (
-    <Container maxW="container.xl">
-      <Button variant={"outline"} onClick={onOpen}>
-        New Project
-      </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay backdropFilter={"blur(10px)"} />
-        <ModalContent>
-          <ModalHeader>New Project</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <ProjectForm createProject={createProject} loading={loading} />
-          </ModalBody>
+    <>
+      <Container maxW="container.xl">
+        <Reminders />
+      </Container>
+      <Container maxW="container.xl">
+        <Button variant={"outline"} onClick={onOpen}>
+          New Project
+        </Button>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay backdropFilter={"blur(10px)"} />
+          <ModalContent>
+            <ModalHeader>New Project</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <ProjectForm createProject={createProject} loading={loading} />
+            </ModalBody>
 
-          <ModalFooter></ModalFooter>
-        </ModalContent>
-      </Modal>
-      <SimpleGrid pt={8} minChildWidth={"320px"} spacing="40px">
-        {Array.isArray(projects)
-          ? projects.map((project) => (
-              <Card maxW="lg" key={project.id} boxShadow="lg">
-                <CardHeader>
-                  <Flex
-                    flex="1"
-                    alignItems={"center"}
-                    justifyContent={"space-between"}
-                  >
-                    <Heading size="lg">{project.title}</Heading>
-                    <Box>
-                      {(() => {
-                        if (project.status === "Not Started") {
-                          return (
-                            <Tag colorScheme={"red"}>
-                              <TagLabel>{project.status}</TagLabel>
-                            </Tag>
-                          );
-                        } else if (project.status === "In Progress") {
-                          return (
-                            <Tag colorScheme={"orange"}>
-                              <TagLabel>{project.status}</TagLabel>
-                            </Tag>
-                          );
-                        } else {
-                          return (
-                            <Tag colorScheme={"green"}>
-                              <TagLabel>{project.status}</TagLabel>
-                            </Tag>
-                          );
-                        }
-                      })()}
-                    </Box>
-                  </Flex>
-                </CardHeader>
-                <Divider />
-                <CardBody>
-                  <Box>
-                    <Heading size="xs">Description</Heading>
-                    {project.description}
-
-                    <Box pt={4}>
-                      <Button
-                        onClick={() => navigate(`/project/${project.id}`)}
-                        colorScheme={"blue"}
-                      >
-                        View
-                      </Button>
-                    </Box>
-                  </Box>
-                </CardBody>
-                <Divider />
-                <CardFooter
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                >
-                  created on: {new Date(project.createdAt).toLocaleDateString()}
-                  <Menu>
-                    <MenuButton
-                      as={IconButton}
-                      icon={<GoKebabVertical />}
-                      variant={"ghost"}
+            <ModalFooter></ModalFooter>
+          </ModalContent>
+        </Modal>
+        <SimpleGrid pt={8} minChildWidth={"320px"} spacing="40px">
+          {Array.isArray(projects)
+            ? projects.map((project) => (
+                <Card maxW="lg" key={project.id} boxShadow="lg">
+                  <CardHeader>
+                    <Flex
+                      flex="1"
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
                     >
-                      Edit
-                    </MenuButton>
-                    <MenuList>
-                      <MenuItem
-                        icon={<GoSync />}
-                        onClick={() => updateStatus(project, "In Progress")}
+                      <Heading size="lg">{project.title}</Heading>
+                      <Box>
+                        {(() => {
+                          if (project.status === "Not Started") {
+                            return (
+                              <Tag colorScheme={"red"}>
+                                <TagLabel>{project.status}</TagLabel>
+                              </Tag>
+                            );
+                          } else if (project.status === "In Progress") {
+                            return (
+                              <Tag colorScheme={"orange"}>
+                                <TagLabel>{project.status}</TagLabel>
+                              </Tag>
+                            );
+                          } else {
+                            return (
+                              <Tag colorScheme={"green"}>
+                                <TagLabel>{project.status}</TagLabel>
+                              </Tag>
+                            );
+                          }
+                        })()}
+                      </Box>
+                    </Flex>
+                  </CardHeader>
+                  <Divider />
+                  <CardBody>
+                    <Box>
+                      <Heading size="xs">Description</Heading>
+                      {project.description}
+
+                      <Box pt={4}>
+                        <Button
+                          onClick={() => navigate(`/project/${project.id}`)}
+                          colorScheme={"blue"}
+                        >
+                          View
+                        </Button>
+                      </Box>
+                    </Box>
+                  </CardBody>
+                  <Divider />
+                  <CardFooter
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                  >
+                    created on:{" "}
+                    {new Date(project.createdAt).toLocaleDateString()}
+                    <Menu>
+                      <MenuButton
+                        as={IconButton}
+                        icon={<GoKebabVertical />}
+                        variant={"ghost"}
                       >
-                        In Progress
-                      </MenuItem>
-                      <MenuItem
-                        icon={<GoCheck />}
-                        onClick={() => updateStatus(project, "Complete")}
-                      >
-                        Complete
-                      </MenuItem>
-                      <MenuDivider />
-                      <MenuItem
-                        icon={<GoTrashcan />}
-                        onClick={() => deleteProject(project)}
-                      >
-                        Delete
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
-                </CardFooter>
-              </Card>
-            ))
-          : null}
-      </SimpleGrid>
-    </Container>
+                        Edit
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem
+                          icon={<GoSync />}
+                          onClick={() => updateStatus(project, "In Progress")}
+                        >
+                          In Progress
+                        </MenuItem>
+                        <MenuItem
+                          icon={<GoCheck />}
+                          onClick={() => updateStatus(project, "Complete")}
+                        >
+                          Complete
+                        </MenuItem>
+                        <MenuDivider />
+                        <MenuItem
+                          icon={<GoTrashcan />}
+                          onClick={() => deleteProject(project)}
+                        >
+                          Delete
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </CardFooter>
+                </Card>
+              ))
+            : null}
+        </SimpleGrid>
+      </Container>
+    </>
   );
 }
 

@@ -33,7 +33,7 @@ import {
 import {ArrowBackIcon, AddIcon} from "@chakra-ui/icons";
 import {useNavigate} from "react-router-dom";
 import TaskForm from "../components/taskform";
-import {GoKebabVertical, GoCheck, GoTrashcan, GoSync} from "react-icons/go"
+import {GoKebabVertical, GoCheck, GoTrashcan, GoSync, GoBell} from "react-icons/go"
 
 
 function Projects() {
@@ -123,6 +123,13 @@ function Projects() {
         setLoadTasks(true);
     }
 
+    async function setReminder(data) {
+        const { title, dueDate } = data;
+
+        await localStorage.setItem("taskrem", JSON.stringify({"title": title, "dueDate": new Date(dueDate).toDateString()}));
+
+    }
+
     return (
         <div>
             <Container maxW="1200px">
@@ -192,6 +199,7 @@ function Projects() {
                                             <MenuList>
                                                 <MenuItem icon={<GoSync />} onClick={() => updateStatus(task, "In Progress")}>In Progress</MenuItem>
                                                 <MenuItem icon={<GoCheck />} onClick={() => updateStatus(task, "Done")}>Done</MenuItem>
+                                                <MenuItem icon={<GoBell />} onClick={() => setReminder(task)}>Set Reminder</MenuItem>
                                                 <MenuDivider />
                                                 <MenuItem icon={<GoTrashcan />}>Delete</MenuItem>
                                             </MenuList>
